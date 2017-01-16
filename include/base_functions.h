@@ -13,8 +13,8 @@ int create_tcp_socket(int domain = AF_INET, int type = SOCK_STREAM,
 /*
   bind the tcp socket to an interface
 */
-int bind_tcp_socket(int sockfd, std::string ip_addr = std::string("0.0.0.0"),
-                    short port = TCP_SERVER_PORT);
+void bind_tcp_socket(int sockfd, std::string ip_addr = std::string("0.0.0.0"),
+                     short port = TCP_SERVER_PORT);
 
 /*
   set the server socket's stening port reuseable
@@ -29,8 +29,8 @@ void set_socket_ready(int sockfd, int max_wait = 5);
 /*
   build connection betwwen the peers
 */
-int build_connection(int sockfd, std::string ip_addr,
-                     short port = TCP_SERVER_PORT);
+void build_connection(int sockfd, std::string ip_addr,
+                      short port = TCP_SERVER_PORT);
 
 /*
   send data to remote socket
