@@ -1,8 +1,12 @@
 #include "../include/base_functions.h"
 #include "../include/exceptions.h"
 #include <arpa/inet.h>
+#include <cstring>
 #include <netinet/in.h>
 #include <sys/socket.h>
+
+const int buffer_size = 100000;
+static char buffer[buffer_size];
 
 int moon::create_tcp_socket(int domain, int type, int protocol) {
   return socket(domain, type, protocol);
@@ -43,7 +47,7 @@ size_t moon::send_data(int sockfd, std::string data) {
 }
 
 std::string moon::recv_data(int sockfd) {
-  char buffer[100] = "";
+  std::memset(buffer, '\0', buffer_size);
   recv(sockfd, buffer, 1000, 0);
   return std::string(buffer);
 }
