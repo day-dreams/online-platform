@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-const int buffer_size = 100000;
+const int buffer_size = 1024 * 8;
 static char buffer[buffer_size];
 
 int moon::create_tcp_socket(int domain, int type, int protocol) {
@@ -43,11 +43,18 @@ void moon::build_connection(int sockfd, std::string ip_addr, short port) {
 }
 
 size_t moon::send_data(int sockfd, std::string data) {
-  return send(sockfd, data.c_str(), data.length(), 0);
+  auto size = send(sockfd, data.c_str(), data.length(), 0);
+  if (size == -1)
+    throw send_error();
+  else
+    return size;
 }
 
 std::string moon::recv_data(int sockfd) {
   std::memset(buffer, '\0', buffer_size);
-  recv(sockfd, buffer, 1000, 0);
-  return std::string(buffer);
+  auto size = recv(sockfd, buffer, 1000, 0);
+  if (size == -1)
+    throw recv_error();
+  else
+    return std::string(buffer);
 }

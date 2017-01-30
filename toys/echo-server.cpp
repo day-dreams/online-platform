@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <sys/socket.h>
+#include <unistd.h>
 using namespace std;
 
 int main(int argc, char **argv) {
@@ -13,22 +14,28 @@ int main(int argc, char **argv) {
   moon::set_socket_port_reuseable(socket);
   moon::bind_tcp_socket(socket);
   moon::set_socket_ready(socket);
-  LOG(INFO) << "server_socket set up already.";
+  LOG(ERROR) << "server_socket set up already.";
   // cout << "server_socket set up already.";
   while (true) {
     sockaddr client_addr;
     int tem_len = sizeof(sockaddr);
     auto client =
         accept(socket, (sockaddr *)&client_addr, (socklen_t *)&tem_len);
-    LOG(INFO) << "an client reached.\n";
-    while (true) {
-      auto data = moon::recv_data(client);
-      if (data == "goodbye") {
-        moon::send_data(client, "see you next time");
-        close(client);
-        break;
-      } else
-        moon::send_data(client, data + " [again]\n");
+    LOG(ERROR) << "an client reached.\n";
+    auto pid = fork();
+    if (pid == -1) {
+      std::cout << "error during fork()!" << '\n';
+      return -1;
+    } else if (pid == 0) {
+      while (true) {
+        auto data = moon::recv_data(client);
+        if (data == "goodbye") {
+          moon::send_data(client, "see you next time");
+          close(client);
+          break;
+        } else
+          moon::send_data(client, data + " [again]\n");
+      }
     }
   }
   cout << socket << endl;

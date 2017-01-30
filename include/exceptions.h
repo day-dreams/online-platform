@@ -25,4 +25,14 @@ class connect_error : public base_error {
 public:
   connect_error() : base_error("error in connecting!") {}
 };
+
+class send_error : public base_error {
+public:
+  send_error() : base_error("error in sending data!") {}
+};
+
+class recv_error : public base_error {
+public:
+  recv_error() : base_error("error in recving data!") {}
+};
 }

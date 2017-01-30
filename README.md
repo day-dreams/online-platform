@@ -10,6 +10,7 @@ and i will make this in c++.
 
 ## Tips
 during this project, i continue to find something interesting as follow:  
+
 ### c++中的赋值问题
 左侧变量需要具有右侧变量的所有类型限定符。如：  
 ```cpp
