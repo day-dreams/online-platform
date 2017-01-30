@@ -1,4 +1,4 @@
-#include "include/base_functions.h"
+#include "../include/base_functions.h"
 #include <glog/logging.h>
 #include <iostream>
 #include <string>
@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
       std::cout << "error during fork()!" << '\n';
       return -1;
     } else if (pid == 0) {
+      close(socket);
       while (true) {
         auto data = moon::recv_data(client);
         if (data == "goodbye") {
@@ -36,7 +37,11 @@ int main(int argc, char **argv) {
         } else
           moon::send_data(client, data + " [again]\n");
       }
+      return 0;
+    } else {
+      close(client);
     }
   }
   cout << socket << endl;
+  return 0;
 }

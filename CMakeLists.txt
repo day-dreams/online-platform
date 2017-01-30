@@ -4,14 +4,11 @@ project(online-platform)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS -fpermissive)
+set(EXECUTABLE_OUTPUT_PATH ../toys)
 
-#
-#   添加源代码目录
-#
 aux_source_directory(./src DIR_SRCS)
-
-add_executable(echo-client echo-client.cpp ${DIR_SRCS})
+add_executable(echo-server toys/echo-server.cpp ${DIR_SRCS})
 #add_executable(test test/main.cpp ${DIR_SRCS})
 
-target_link_libraries(echo-client glog)
-target_link_libraries(echo-client pthread)
+target_link_libraries(echo-server glog)
+target_link_libraries(echo-server pthread)
